@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  mysql:
+    container_name: banking-mysql
+    image: mysql
+    restart: always
+    command: --init-file /data/application/init-sql.sql
+    volumes:
+      - sql-data:/var/lib/mysql
+      - ./init-sql.sql:/data/application/init-sql.sql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: banking
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - banking-network
+  mongodb:
+    container_name: banking-mongodb
+    image: mongo:5.0
+    ports:
+      - "27015:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    networks:
+      - banking-network
+
+volumes:
+  sql-data:
+  mongo-data:
+networks:
+  banking-network:
