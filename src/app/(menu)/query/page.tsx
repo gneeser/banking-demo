@@ -33,11 +33,28 @@ export default function Page() {
         {queries.map((query: any, i) => {
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-              <Card sx={{ p: 1, height: '180px' }}>
+              <Card sx={{ p: 1, height: '200px' }}>
                 <CardActionArea sx={{ height: '100%', weight: '100%' }} href={`/query/${query.id}`}>
-                  <CardHeader sx={{ p: 1 }} title={query.name} />
+                  <CardHeader sx={{ p: 1 }} titleTypographyProps={{
+                    sx: {
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: 2,
+                    }
+                  }} title={query.name} />
                   <CardContent>
-                    <Typography noWrap variant="body2">{query.query}</Typography>
+                    <Typography
+                      sx={{
+                        display: '-webkit-box',
+                        overflow: 'hidden',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 3,
+                      }}
+                      variant="body2"
+                    >
+                      {query.query}
+                    </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>

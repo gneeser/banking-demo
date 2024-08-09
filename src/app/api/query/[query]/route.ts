@@ -50,3 +50,27 @@ export async function PATCH(request: Request, { params }: { params: { query: str
     })
   }
 }
+
+export async function DELETE(request: Request, { params }: { params: { query: string } }): Promise<Response> {
+  try {
+    const id = params.query
+    if (!id) throw new Error('Validation Error: query is required')
+
+    if (!process.env.MONGO_URL) throw new Error('MONGO_URL not found')
+    const _conn = await MongoClient.connect(process.env?.MONGO_URL)
+    const _db = _conn.db('banking')
+
+    const query = await _db.collection('query').deleteOne({ id })
+
+    await _conn.close()
+
+    return new Response(JSON.stringify({ id }), {
+      headers: { "content-type": "application/json" },
+    })
+  } catch (err) {
+    let error = err as Error
+    return new Response(JSON.stringify({ error: { name: error?.name, message: error?.message } }), {
+      headers: { "content-type": "application/json" },
+    })
+  }
+}
